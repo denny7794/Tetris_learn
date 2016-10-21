@@ -59,10 +59,28 @@ public class GameTetris {
     }
 
     void go() {
+        frame = new JFrame(TITLE_OF_PROGRAM);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(FIELD_WIDTH * BLOCK_SIZE + FIELD_DX, FIELD_HEIGHT * BLOCK_SIZE + FIELD_DY);
+        frame.setLocation(START_LOCATION, START_LOCATION);
+        frame.setResizable(false);
 
+        frame.setVisible(true);
     }
 
     class Figure {
 
     }
+
+    class Block {
+
+    }
+
+    public class Canvas extends JPanel {
+        @Override
+        public void paint(Graphics g) {
+            super.paint(g);
+        }
+    }
+
 }
