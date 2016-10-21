@@ -24,7 +24,7 @@ public class GameTetris {
     final int UP = 38;
     final int RIGHT = 39;
     final int DOWN = 40;
-    final int SHOW_DELAY = 200; // delay for animation
+    final int SHOW_DELAY = 350; // delay for animation
     final int[][][] SHAPES = {
             {{0,0,0,0}, {1,1,1,1}, {0,0,0,0}, {0,0,0,0}, {4, 0x00f0f0}}, // I
             {{0,0,0,0}, {0,1,1,0}, {0,1,1,0}, {0,0,0,0}, {4, 0xf0f000}}, // O
@@ -151,12 +151,20 @@ public class GameTetris {
             while (!isTouchGround()) stepDown();
         }
 
+        boolean isTouchWall(int direction) {
+            for (Block block : figure) {
+                if (direction == LEFT && (block.getX() == 0 || mine[block.getY()][block.getX() - 1] > 0)) return true;
+                if (direction == RIGHT && (block.getX() == FIELD_WIDTH - 1 || mine[block.getY()][block.getX() + 1] > 0)) return true;
+            }
+            return false;
+        }
+
         void move(int direction) {
-//            if (!isTouchWall(direction)) {
+            if (!isTouchWall(direction)) {
                 int dx = direction - 38;
                 for (Block block : figure) block.setX(block.getX() + dx);
                 x += dx;
-//            }
+            }
         }
 
         void rotate() {
