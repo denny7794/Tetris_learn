@@ -3,6 +3,8 @@
  * Created by Denis on 21.10.2016.
  */
 
+import sun.security.provider.SHA;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -105,6 +107,27 @@ public class GameTetris {
     }
 
     class Figure {
+        private ArrayList<Block> figure = new ArrayList<Block>();
+        int[][] shape = new int[4][4];
+        private int type, size, color;
+        private int x = 3, y = 0;
+
+        Figure() {
+            type = random.nextInt(SHAPES.length);
+            size = SHAPES[type][4][0];
+            color = SHAPES[type][4][1];
+            if (size == 4) y = -1;
+            for (int i = 0; i < size; i++)
+                System.arraycopy(SHAPES[type][i], 0, shape[i], 0, SHAPES[type][i].length);
+            createFromShape();
+        }
+
+        void createFromShape() {
+            for (int x = 0; x < size; x++){
+                for (int y = 0; y < size; y++)
+                    if (shape[y][x] == 1) figure.add(new Block(x + this.x, y + this.y));
+            }
+        }
 
         boolean isTouchGround() {
             return false;
@@ -134,6 +157,10 @@ public class GameTetris {
 
         }
 
+        void paint(Graphics g) {
+            for (Block block: figure) block.paint(g, color);
+        }
+
     }
 
     class Block {
@@ -160,6 +187,7 @@ public class GameTetris {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
+            figure.paint(g);
         }
     }
 
