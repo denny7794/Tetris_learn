@@ -80,9 +80,59 @@ public class GameTetris {
         });
 
         frame.setVisible(true);
+
+        Arrays.fill(mine[FIELD_HEIGHT], 1);
+
+        // main loop of game
+        while (!gameOver) {
+            try {
+                Thread.sleep(SHOW_DELAY);
+            } catch (Exception e) { e.printStackTrace(); }
+            canvasPanel.repaint();
+            if (figure.isTouchGround()) {
+                figure.leaveOnTheGround();
+                checkFilling();
+                figure = new Figure();
+                gameOver = figure.isCrossGround();
+            } else {
+                figure.stepDown();
+            }
+        }
+    }
+
+    void checkFilling() {
+
     }
 
     class Figure {
+
+        boolean isTouchGround() {
+
+        }
+
+        boolean isCrossGround() {
+
+        }
+
+        void leaveOnTheGround() {
+
+        }
+
+        void stepDown() {
+
+        }
+
+        void drop() {
+
+        }
+
+        void move(int direction) {
+
+        }
+
+        void rotate() {
+
+        }
 
     }
 
