@@ -24,7 +24,7 @@ public class GameTetris {
     final int UP = 38;
     final int RIGHT = 39;
     final int DOWN = 40;
-    final int SHOW_DELAY = 350; // delay for animation
+    final int SHOW_DELAY = 200; // delay for animation
     final int[][][] SHAPES = {
             {{0,0,0,0}, {1,1,1,1}, {0,0,0,0}, {0,0,0,0}, {4, 0x00f0f0}}, // I
             {{0,0,0,0}, {0,1,1,0}, {0,1,1,0}, {0,0,0,0}, {4, 0xf0f000}}, // O
@@ -130,6 +130,7 @@ public class GameTetris {
         }
 
         boolean isTouchGround() {
+            for (Block block: figure) if (mine[block.getY()+1][block.getX()] > 0) return true;
             return false;
         }
 
@@ -138,20 +139,24 @@ public class GameTetris {
         }
 
         void leaveOnTheGround() {
-
+            for (Block block: figure) mine[block.getY()][block.getX()] = color;
         }
 
         void stepDown() {
-            for (Block block: figure) block.setY(block.getY() + 1);
+            for (Block block : figure) block.setY(block.getY() + 1);
             y++;
         }
 
         void drop() {
-
+            while (!isTouchGround()) stepDown();
         }
 
         void move(int direction) {
-
+//            if (!isTouchWall(direction)) {
+                int dx = direction - 38;
+                for (Block block : figure) block.setX(block.getX() + dx);
+                x += dx;
+//            }
         }
 
         void rotate() {
@@ -188,6 +193,12 @@ public class GameTetris {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
+            for (int x = 0; x < FIELD_WIDTH; x++)
+                for (int y = 0; y < FIELD_HEIGHT; y++)
+                    if (mine[y][x] > 0) {
+                        g.setColor(new Color(mine[y][x]));
+                        g.fill3DRect(x*BLOCK_SIZE+1, y*BLOCK_SIZE+1, BLOCK_SIZE-1, BLOCK_SIZE-1, true);
+                    }
             figure.paint(g);
         }
     }
