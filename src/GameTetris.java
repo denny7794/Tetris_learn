@@ -167,8 +167,30 @@ public class GameTetris {
             }
         }
 
-        void rotate() {
+        boolean isWrongPosition() {
+            for (int x = 0; x < size; x++)
+                for (int y = 0; y < size; y++)
+                    if (shape[y][x] == 1) {
+                        if (y + this.y < 0) return true;
+                        if (x + this.x <0 || x + this.x > FIELD_WIDTH - 1) return true;
+                        if (mine[y + this.y][x + this.x] > 0) return true;
+                    }
+            return false;
+        }
 
+        void rotate() {
+            for (int i = 0; i < size/2; i++)
+                for (int j = i; j < size-1-i; j++) {
+                    int tmp = shape[size-1-j][i];
+                    shape[size-1-j][i] = shape[size-1-i][size-1-j];
+                    shape[size-1-i][size-1-j] = shape[j][size-1-i];
+                    shape[j][size-1-i] = shape[i][j];
+                    shape[i][j] = tmp;
+                }
+            if (!isWrongPosition()) {
+                figure.clear();
+                createFromShape();
+            }
         }
 
         void paint(Graphics g) {
