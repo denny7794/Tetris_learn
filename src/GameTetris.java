@@ -142,7 +142,8 @@ public class GameTetris {
         }
 
         void stepDown() {
-
+            for (Block block: figure) block.setY(block.getY() + 1);
+            y++;
         }
 
         void drop() {
